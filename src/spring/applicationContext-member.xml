@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+
+	<!-- dao配置 -->
+	<bean id="memberDao" class="cc.messcat.dao.member.MemberDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="packagesDao" class="cc.messcat.dao.member.PackagesDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="collectDao" class="cc.messcat.dao.member.CollectDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="bankDao" class="cc.messcat.dao.member.BankDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="buysRecordDao" class="cc.messcat.dao.member.BuysRecordDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="integralDao" class="cc.messcat.dao.member.IntegralDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="virtualCoinRecordDao" class="cc.messcat.dao.member.VirtualCoinRecordDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean> 
+     <bean id="activityExchangeRecordDao" class="cc.messcat.dao.member.ActivityExchangeRecordDaoImpl">
+     	<property name="sessionFactory" ref="sessionFactory"/>
+     </bean>
+    <bean id="withdrawRecordDao" class="cc.messcat.dao.member.WithdrawRecordDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+     <bean id="buysRecordNewDao" class="cc.messcat.dao.member.ExpenseTotalDaoImpl">
+     	<property name="sessionFactory" ref="sessionFactory"/>
+     </bean>
+     <bean id="walletDao" class="cc.messcat.dao.member.WalletDaoImpl">
+     	<property name="sessionFactory" ref="sessionFactory"/>
+     </bean>
+     <bean id="liveDao" class="cc.messcat.dao.live.LiveDaoImpl">
+     	<property name="sessionFactory" ref="sessionFactory"/>
+     </bean>
+	<!-- mgr配置 -->
+	<bean id="memberManagerDao" class="cc.messcat.service.member.MemberManagerDaoImpl">
+		<property name="memberDao" ref="memberDao"/>
+		<property name="payDao" ref="payDao" />
+		<property name="buysRecordDao" ref="buysRecordDao" />
+		<property name="regionDao" ref="regionDao" />
+		<property name="productDao" ref="productDao" />
+		<property name="standardReadDao" ref="standardReadDao" />
+		<property name="epNewsDao" ref="epNewsDao" />
+		<property name="collectDao" ref="collectDao" />
+		<property name="baseDao" ref="baseDao"/>
+		<property name="integralDao" ref="integralDao"/>
+		<property name="hotReplyDao" ref="hotReplyDao"/>
+		<property name="systemMessageDao" ref="systemMessageDao"/>
+		<property name="walletDao" ref="walletDao"/>
+		<property name="expenseTotalDao" ref="buysRecordNewDao"/>
+		<property name="liveDao" ref="liveDao"/>
+		<property name="bankDao" ref="bankDao"/>
+	</bean>
+	<bean id="packagesManagerDao" class="cc.messcat.service.member.PackagesManagerDaoImpl">
+		<property name="packagesDao" ref="packagesDao"/>
+	</bean>
+	<bean id="collectManagerDao" class="cc.messcat.service.member.CollectManagerDaoImpl">
+		<property name="collectDao" ref="collectDao"/>
+		<property name="regionDao" ref="regionDao"/>
+		<property name="productDao" ref="productDao"/>
+		<property name="standardReadDao" ref="standardReadDao"/>
+		<property name="qualityShareDao" ref="qualityShareDao"/>
+		<property name="hotReplyDao" ref="hotReplyDao"/>
+		<property name="businessInfoDao" ref="businessInfoDao"/>
+		<property name="epNewsDao" ref="epNewsDao"/>
+		<property name="businessProductDao" ref="businessProductDao"/>
+		<property name="baseDao" ref="baseDao"/>
+		<property name="memberDao" ref="memberDao"/>
+		<property name="buysRecordDao" ref="buysRecordDao"/>
+		<property name="integralDao" ref="integralDao"/>
+		<property name="webSiteDao" ref="webSiteDao"/>
+		<property name="expenseTotalDao" ref="buysRecordNewDao"/>
+		<property name="liveDao" ref="liveDao"/>
+	</bean>
+	<bean id="bankManagerDao" class="cc.messcat.service.member.BankManagerDaoImpl">
+		<property name="bankDao" ref="bankDao"/>
+	</bean>
+	<bean id="buysRecordManagerDao" class="cc.messcat.service.member.BuysRecordManagerDaoImpl">
+		<property name="collectDao" ref="collectDao"/>
+		<property name="regionDao" ref="regionDao"/>
+		<property name="productDao" ref="productDao"/>
+		<property name="standardReadDao" ref="standardReadDao"/>
+		<property name="qualityShareDao" ref="qualityShareDao"/>
+		<property name="businessProductDao" ref="businessProductDao"/>
+		<property name="businessInfoDao" ref="businessInfoDao"/>
+		<property name="hotReplyDao" ref="hotReplyDao"/>
+		<property name="memberDao" ref="memberDao"/>
+		<property name="buysRecordDao" ref="buysRecordDao"/>
+	</bean>
+	<bean id="virtualCoinRecordManagerDao" class="cc.messcat.service.member.VirtualCoinRecordManagerDaoImpl">
+        <property name="virtualCoinRecordDao" ref="virtualCoinRecordDao"/>
+    </bean>
+	<bean id="activityExchangeRecordManagerDao" class="cc.messcat.service.member.ActivityExchangeRecordManagerDaoImpl">
+		<property name="activityExchangeRecordDao" ref="activityExchangeRecordDao"/>
+		<property name="systemMessageDao" ref="systemMessageDao"/>
+		<property name="liveDao" ref="liveDao"/>
+		<property name="memberDao" ref="memberDao"/>
+	</bean>
+    <bean id="withdrawRecordManagerDao" class="cc.messcat.service.member.WithdrawRecordManagerDaoImpl">
+        <property name="withdrawRecordDao" ref="withdrawRecordDao"/>
+    </bean>
+    <bean id="expenseTotalManagerDao" class="cc.messcat.service.member.ExpenseTotalManagerDaoImpl">
+    	<property name="collectDao" ref="collectDao"/>
+		<property name="regionDao" ref="regionDao"/>
+		<property name="productDao" ref="productDao"/>
+		<property name="standardReadDao" ref="standardReadDao"/>
+		<property name="qualityShareDao" ref="qualityShareDao"/>
+		<property name="businessProductDao" ref="businessProductDao"/>
+		<property name="businessInfoDao" ref="businessInfoDao"/>
+		<property name="hotReplyDao" ref="hotReplyDao"/>
+		<property name="memberDao" ref="memberDao"/>
+    	<property name="expenseTotalDao" ref="buysRecordNewDao"/>
+    	<property name="liveDao" ref="liveDao"/>
+    </bean>
+    <bean id="whiteListManagerDao" class="cc.messcat.service.member.WhiteListManagerDaoImpl">
+    	<property name="whiteListDao" ref="whiteListDao"/>
+    </bean>
+	<!-- action配置 -->
+	<bean id="memberAction" class="cc.messcat.web.server.MemberAction"
+		scope="prototype">
+		<property name="memberManagerDao" ref="memberManagerDao"/>
+		<property name="collectManagerDao" ref="collectManagerDao"/>
+		<property name="epNewsManagerDao" ref="epNewsManagerDao"/>
+		<property name="packagesManagerDao" ref="packagesManagerDao"/>
+		<property name="buysRecordManagerDao" ref="buysRecordManagerDao"/>
+		<property name="standardReadManagerDao" ref="standardReadManagerDao"/>
+		<property name="bankManagerDao" ref="bankManagerDao"/>
+		<property name="expertIEManagerDao" ref="expertIEManagerDao"/>
+		<property name="virtualCoinRecordManagerDao" ref="virtualCoinRecordManagerDao"/>
+        <property name="withdrawRecordManagerDao" ref="withdrawRecordManagerDao"/>
+        <property name="expenseTotalManagerDao" ref="expenseTotalManagerDao"/>
+		<property name="walletManagerDao" ref="walletManagerDao"/>
+		<property name="activityExchangeRecordManagerDao" ref="activityExchangeRecordManagerDao"/>
+		<property name="integralManagerDao" ref="integralManagerDao"/>
+		<property name="liveService" ref="liveService"/>
+		<property name="consultServerManagerDao" ref="consultServerManagerDao"/>
+	</bean>
+
+</beans>

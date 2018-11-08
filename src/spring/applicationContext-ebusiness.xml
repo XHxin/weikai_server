@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+
+	<!-- dao配置 -->
+	<bean id="businessInfoDao" class="cc.messcat.dao.ebusiness.EBusinessInfoDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="businessProductDao" class="cc.messcat.dao.ebusiness.EBusinessProductDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="walletDao" class="cc.messcat.dao.member.WalletDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="buysRecordNewDao" class="cc.messcat.dao.member.ExpenseTotalDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="expertDivideIntoDao" class="cc.messcat.dao.system.ExpertDivideIntoDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<!-- mgr配置 -->
+	<bean id="businessInfoManagerDao"
+		class="cc.messcat.service.ebusiness.EBusinessInfoManagerDaoImpl">
+		<property name="businessInfoDao" ref="businessInfoDao" />
+		<property name="businessProductDao" ref="businessProductDao" />
+	</bean>
+	<bean id="businessProductManagerDao"
+		class="cc.messcat.service.ebusiness.EBusinessProductManagerDaoImpl">
+		<property name="businessProductDao" ref="businessProductDao" />
+	</bean>
+	<bean id="walletManagerDao" class="cc.messcat.service.member.WalletManagerDaoImpl">
+		<property name="walletDao" ref="walletDao"/>
+	</bean>
+	
+
+	<bean id="eBusinessAction" class="cc.messcat.web.server.EBusinessAction"
+		scope="prototype">
+		<property name="businessInfoManagerDao" ref="businessInfoManagerDao"/>
+		<property name="memberManagerDao" ref="memberManagerDao"/>
+	</bean>
+
+	<bean id="integralDao" class="cc.messcat.dao.member.IntegralDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="platformIncomeDao" class="cc.messcat.dao.system.ExpensePlatDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="divideScaleExpertDao" class="cc.messcat.dao.system.DivideScaleExpertDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="integralManagerDao" class="cc.messcat.service.member.IntegralManagerDaoImpl">
+		<property name="integralDao" ref="integralDao" />
+	</bean>
+	<bean id="expertDivideIntoManagerDao" class="cc.messcat.service.system.ExpertDivideIntoManagerDaoImpl"></bean>
+
+
+</beans>

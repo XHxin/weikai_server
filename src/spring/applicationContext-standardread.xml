@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+	
+							<!-- 标准定制 -->
+	<!-- dao配置  -->
+	<bean id="standardMadeDao" class="cc.messcat.dao.standardread.StandardMadeDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="whiteListDao" class="cc.messcat.dao.member.WhiteListDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- mgr配置 -->
+	<bean id="standardMadeManagerDao" class="cc.messcat.service.standardread.StandardMadeManagerDaoImpl">
+		<property name="standardMadeDao" ref="standardMadeDao"/>
+	</bean>
+	
+    						<!-- 标准解读 -->
+    <!-- dao配置 -->
+	<bean id="standardReadDao" class="cc.messcat.dao.standardread.StandardReadDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- mgr配置 -->
+	<bean id="standardReadManagerDao" class="cc.messcat.service.standardread.StandardReadManagerDaoImpl">
+		<property name="standardReadDao" ref="standardReadDao"/>
+		<property name="memberDao" ref="memberDao"/>
+	</bean>
+	
+	 <!-- action配置 -->
+    <bean id="standardReadingAction" class="cc.messcat.web.server.StandardReadingAction" scope="prototype">
+		<property name="standardReadManagerDao" ref="standardReadManagerDao"/>
+		<property name="expertManagerDao" ref="expertManagerDao"/>
+		<property name="qualityShareManagerDao" ref="qualityShareManagerDao"/>
+		<property name="memberManagerDao" ref="memberManagerDao"/>
+    </bean>
+        
+    						<!-- 质量分享-->
+    <!-- dao配置 -->
+	<bean id="qualityShareDao" class="cc.messcat.dao.standardread.QualityShareDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- mgr配置 -->
+	<bean id="qualityShareManagerDao" class="cc.messcat.service.standardread.QualityShareManagerDaoImpl">
+		<property name="qualityShareDao" ref="qualityShareDao"/>
+		<property name="memberDao" ref="memberDao"/>
+		<property name="expenseTotalDao" ref="buysRecordNewDao"/>
+	</bean>
+	        
+    						<!-- 热门专家-->
+    <!-- dao配置 -->
+	<bean id="expertDao" class="cc.messcat.dao.standardread.ExpertDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- mgr配置 -->
+	<bean id="expertManagerDao" class="cc.messcat.service.standardread.ExpertManagerDaoImpl">
+		<property name="expertDao" ref="expertDao"/>
+		<property name="whiteListDao" ref="whiteListDao"/>
+	</bean>
+
+</beans>

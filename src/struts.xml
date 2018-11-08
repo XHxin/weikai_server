@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<!-- import struts-*.xml -->
+	<include file="struts-ajax.xml"></include>
+	
+	<constant name="struts.devMode" value="false" />
+	
+	<package name="default" extends="struts-default" namespace="/">
+	
+		<action name="index">
+			<result>/index.jsp</result>
+		</action>
+		
+	</package>
+	
+
+</struts>

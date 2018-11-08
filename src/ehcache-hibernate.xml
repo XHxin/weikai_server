@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+	<diskStore path="c:\cache\mccms"/>
+	
+	<cache name="cc.messcat.entity.Users"
+		maxElementsInMemory="500" overflowToDisk="true" eternal="true" />
+			
+	<defaultCache maxElementsInMemory="100000" overflowToDisk="true" eternal="false"
+		memoryStoreEvictionPolicy="LRU" maxElementsOnDisk="10000000" diskExpiryThreadIntervalSeconds="1000"
+		timeToIdleSeconds="3600" timeToLiveSeconds="100000" diskPersistent="false" />
+
+</ehcache>

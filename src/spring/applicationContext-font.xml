@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+
+	<!-- dao配置 -->
+	<bean id="webSiteDao" class="cc.messcat.dao.system.WebSiteDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="webSkinDao" class="cc.messcat.dao.style.WebSkinDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="epNewsDao" class="cc.messcat.dao.collection.EpNewsDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="epColumnDao" class="cc.messcat.dao.collection.EpColumnDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<!-- service配置 -->
+	<bean id="epNewsManagerDao" class="cc.messcat.service.collection.EpNewsManagerDaoImpl">
+		<property name="epColumnDao" ref="epColumnDao"/>
+		<property name="epNewsDao" ref="epNewsDao"/>
+		<property name="collectDao" ref="collectDao"/>
+		<property name="liveDao" ref="liveDao"/>
+	</bean>
+	<bean id="epColumnManagerDao" class="cc.messcat.service.collection.EpColumnManagerDaoImpl">
+		<property name="epColumnDao" ref="epColumnDao"/>
+	</bean>
+	<bean id="webSiteManagerDao" class="cc.messcat.service.system.WebSiteManagerDaoImpl">
+		<property name="webSiteDao" ref="webSiteDao"/>
+		<property name="webSkinDao" ref="webSkinDao"/>
+	</bean>
+
+	<!-- action配置 -->
+	<bean id="frontAction" class="cc.messcat.web.server.FrontAction" scope="prototype">
+		<property name="epNewsManagerDao" ref="epNewsManagerDao"/>
+		<property name="productManagerDao" ref="productManagerDao"/>
+		<property name="standardManagerDao" ref="standardManagerDao"/>
+		<property name="regionManagerDao" ref="regionManagerDao"/>
+		<property name="webSiteManagerDao" ref="webSiteManagerDao"/>
+		<property name="memberManagerDao" ref="memberManagerDao"/>
+		<property name="legalManagerDao" ref="legalManagerDao"/>
+		<property name="collectManagerDao" ref="collectManagerDao"/>
+		<property name="buysRecordManagerDao" ref="buysRecordManagerDao"/>
+		<property name="authenticationManagerDao" ref="authenticationManagerDao"/>
+		<property name="nationalDifferencesManagerDao" ref="nationalDifferencesManagerDao"/>
+		<property name="certificationAuthorityManagerDao" ref="certificationAuthorityManagerDao"/>
+		<property name="certificationReportService" ref="certificationReportService"/>
+		<property name="liveService" ref="liveService"/>
+		<property name="standardReadManagerDao" ref="standardReadManagerDao"/>
+	</bean>
+
+</beans>

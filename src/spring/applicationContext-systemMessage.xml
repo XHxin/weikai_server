@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+
+	<bean id="systemMessageDao" class="cc.messcat.dao.system.SystemMessageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<bean id="systemMessageManagerDao" class="cc.messcat.service.system.SystemMessageManagerDaoImpl">
+		<property name="systemMessageDao" ref="systemMessageDao"/>
+	</bean>
+
+	<!-- 系统消息 -->
+	<bean id="systemMessageAction" class="cc.messcat.web.server.SystemMessageAction" scope="prototype">
+		<property name="systemMessageManagerDao" ref="systemMessageManagerDao"/>
+		<property name="memberManagerDao" ref="memberManagerDao"/>
+		<property name="standardReadManagerDao" ref="standardReadManagerDao"/>
+		<property name="epNewsManagerDao" ref="epNewsManagerDao"/>
+	</bean>
+
+</beans>

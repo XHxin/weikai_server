@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+
+	<!-- dao配置 -->
+	<bean id="baseDao" class="cc.messcat.bases.BaseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+    	
+ 	<!-- mgr配置 -->
+ 	<bean id="baseManagerDao" class="cc.messcat.bases.BaseManagerDaoImpl">
+ 		<property name="baseDao" ref="baseDao"/>
+ 	</bean>
+
+    <!-- action配置 -->
+    <bean id="baseManagerAction" class="cc.messcat.bases.BaseManagerAction" scope="prototype">
+    	<property name="baseManagerDao" ref="baseManagerDao"/>
+    </bean>
+
+</beans>

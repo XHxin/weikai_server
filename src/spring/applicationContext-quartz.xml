@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="false">
+
+	<bean id="problemInvalidTrigger" class="cc.messcat.quartz.ProblemInvalidTrigger"
+		scope="singleton">
+		<property name="hotReplyService" ref="hotReplyService" />
+		<property name="buysRecordManagerDao" ref="buysRecordManagerDao" />
+		<property name="expenseTotalManagerDao" ref="expenseTotalManagerDao" />
+		<property name="memberManagerDao" ref="memberManagerDao" />
+		<property name="walletManagerDao" ref="walletManagerDao" />
+		<property name="expertIEDao" ref="expertIEDao"/>
+		<property name="expensePlatDao" ref="platformIncomeDao"/>
+	</bean>
+	<!--配置作业类1 未答问题失效 -->
+	<bean id="job1"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="problemInvalidTrigger" />
+		</property>
+		<property name="targetMethod" value="problemInvalid" />
+		<property name="concurrent" value="false" /><!-- 作业不并发调度 -->
+	</bean>
+
+	<!--卡券到期了,更改为不可用状态 -->
+	<bean id="job3"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="problemInvalidTrigger" />
+		</property>
+		<property name="targetMethod" value="updateCouponExpire" />
+		<property name="concurrent" value="false" /><!-- 作业不并发调度 -->
+	</bean>
+	
+	<!--卡券到期提醒：【到期前3天发送】 -->
+	<bean id="job4"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="problemInvalidTrigger" />
+		</property>
+		<property name="targetMethod" value="couponExpireRemind" />
+		<property name="concurrent" value="false" /><!-- 作业不并发调度 -->
+	</bean>
+	
+	<!--会员到期提醒：【到期前3天发送】 -->
+	<bean id="job5"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="problemInvalidTrigger" />
+		</property>
+		<property name="targetMethod" value="memberExpireRemind" />
+		<property name="concurrent" value="false" /><!-- 作业不并发调度 -->
+	</bean>
+
+	<!--微信自动对账：【每天执行一次，对前一天的账】-->
+	<bean id="job6"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="problemInvalidTrigger"/>
+		</property>
+		<property name="targetMethod" value="checkTheBillToWechat"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+
+	<!--支付宝自动对账：【每天执行一次，对前一天的账】-->
+	<bean id="job7"
+		  class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="problemInvalidTrigger"/>
+		</property>
+		<property name="targetMethod" value="checkTheBillToAliPay"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+
+
+
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="job1" />
+		<property name="startDelay" value="30000" /><!-- 调度工厂实例化后，经过30秒开始执行调度 -->
+		<property name="repeatInterval" value="60000" /><!-- 每60秒钟调度一次 -->
+	</bean>
+	
+	<bean id="simpleTrigger3" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="job3" />
+		<property name="startDelay" value="30000" /><!-- 调度工厂实例化后，经过30秒开始执行调度 -->
+		<property name="repeatInterval" value="259200000" /><!-- 每三天调度一次 -->
+	</bean>
+	
+	<bean id="simpleTrigger4" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="job4" />
+		<property name="startDelay" value="10000" /><!-- 调度工厂实例化后，经过30秒开始执行调度 -->
+		<property name="repeatInterval" value="259200000" /><!-- 每三天调度一次 -->
+	</bean>
+	
+	<bean id="simpleTrigger5" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="job5" />
+		<property name="startDelay" value="30000" /><!-- 调度工厂实例化后，经过30秒开始执行调度 -->
+		<property name="repeatInterval" value="259200000" /><!-- 每三天调度一次  -->
+	</bean>
+
+	<bean id="simpleTrigger6" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="job6"/>
+		<property name="startDelay" value="5000"/>
+		<property name="repeatInterval" value="86400000"/><!-- 每天调度一次  -->
+	</bean>
+
+	<bean id="simpleTrigger7" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="job7"/>
+		<property name="startDelay"	value="5000"/>
+		<property name="repeatInterval" value="86400000"/><!-- 每天调度一次  -->
+	</bean>
+
+	<!--配置调度工厂 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="simpleTrigger" />
+				<ref bean="simpleTrigger3" />
+				<!-- <ref bean="simpleTrigger4" />
+				<ref bean="simpleTrigger5" /> -->
+				<!--<ref bean="simpleTrigger6"/>
+				<ref bean="simpleTrigger7"/>-->
+			</list>
+		</property>
+	</bean>
+
+</beans>

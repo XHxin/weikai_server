@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="cc.messcat.entity.CoupnUser" table="coupn_user">
+		<id name="id"  column="id" type="java.lang.Long">
+			<generator class="identity"></generator>
+		</id>
+		<property name="memberId" type="java.lang.Long">
+			<column name="memberId"></column>
+		</property>
+		
+		<property name="sharerId" type="java.lang.Long">
+			<column name="sharerId"></column>
+		</property>
+		<property name="sharer" type="java.lang.String">
+			<column name="sharer"></column>
+		</property>
+		<property name="used" type="java.lang.String">
+			<column name="used"></column>
+		</property>
+		<property name="memberName" type="java.lang.String">
+			<column name="memberName"></column>
+		</property>
+		<many-to-one name="coupnId" class="cc.messcat.entity.Coupn" column="coupnId" cascade="none"  lazy="false"/>
+	</class>
+</hibernate-mapping>

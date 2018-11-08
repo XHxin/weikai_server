@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+	
+	<!-- dao配置 -->
+     <bean id="regionDao" class="cc.messcat.dao.report.RegionDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean>
+     <bean id="productDao" class="cc.messcat.dao.report.ProductDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean>  
+     <bean id="legalDao" class="cc.messcat.dao.report.LegalDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean>
+     <bean id="nationalDifferencesDao" class="cc.messcat.dao.report.NationalDifferencesDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean>  
+     <bean id="standardDao" class="cc.messcat.dao.report.StandardDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean>
+     <bean id="standardBaseDao" class="cc.messcat.dao.report.StandardBaseDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean> 
+     <bean id="certificationAuthorityDao" class="cc.messcat.dao.report.CertificationAuthorityDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean>   
+     <bean id="authenticationDao" class="cc.messcat.dao.report.AuthenticationDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean> 
+     <bean id="certificationReportDao" class="cc.messcat.dao.report.CertificationReportDaoImpl">
+        <property name="sessionFactory" ref="sessionFactory"/>
+     </bean> 
+     
+ 	<!-- mgr配置 -->
+    <bean id="regionManagerDao" class="cc.messcat.service.report.RegionManagerDaoImpl">
+        <property name="regionDao" ref="regionDao"/>
+    </bean>
+    <bean id="productManagerDao" class="cc.messcat.service.report.ProductManagerDaoImpl">
+        <property name="productDao" ref="productDao"/>
+        <property name="standardDao" ref="standardDao"/>
+        <property name="memberDao" ref="memberDao"/>
+        <property name="buysRecordDao" ref="buysRecordDao"/>
+        <property name="regionDao" ref="regionDao"/>
+        <property name="collectDao" ref="collectDao"/>
+        <property name="webSiteDao" ref="webSiteDao"/>
+        <property name="expenseTotalDao" ref="buysRecordNewDao"/>
+    </bean>
+    <bean id="legalManagerDao" class="cc.messcat.service.report.LegalManagerDaoImpl">
+        <property name="legalDao" ref="legalDao"/>
+    </bean>
+    <bean id="nationalDifferencesManagerDao" class="cc.messcat.service.report.NationalDifferencesManagerDaoImpl">
+        <property name="nationalDifferencesDao" ref="nationalDifferencesDao"/>
+    </bean>
+    <bean id="standardManagerDao" class="cc.messcat.service.report.StandardManagerDaoImpl">
+        <property name="standardDao" ref="standardDao"/>
+        <property name="standardBaseDao" ref="standardBaseDao"/>
+    </bean>
+    <bean id="standardBaseManagerDao" class="cc.messcat.service.report.StandardBaseManagerDaoImpl">
+        <property name="standardBaseDao" ref="standardBaseDao"/>
+    </bean>
+    <bean id="certificationAuthorityManagerDao" class="cc.messcat.service.report.CertificationAuthorityManagerDaoImpl">
+        <property name="certificationAuthorityDao" ref="certificationAuthorityDao"/>
+    </bean>
+    <bean id="authenticationManagerDao" class="cc.messcat.service.report.AuthenticationManagerDaoImpl">
+        <property name="authenticationDao" ref="authenticationDao"/>
+    </bean>
+    <bean id="certificationReportService" class="cc.messcat.service.report.CertificationReportServiceImpl">
+        <property name="certificationReportDao" ref="certificationReportDao"/>
+    </bean>
+    
+</beans>

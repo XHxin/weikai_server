@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+	
+	                         <!-- 直播管理 -->
+    <!-- dao配置 -->
+	<bean id="liveDao" class="cc.messcat.dao.live.LiveDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- service配置 -->
+	<bean id="liveService" class="cc.messcat.service.live.LiveServiceImpl">
+		<property name="liveDao" ref="liveDao"/>
+		<property name="collectDao" ref="collectDao"/>
+		<property name="systemMessageDao" ref="systemMessageDao"/>
+		<property name="activityExchangeRecordDao" ref="activityExchangeRecordDao"/>
+	</bean>
+	
+	
+	 <!-- action配置 -->
+    <bean id="liveAction" class="cc.messcat.web.server.LiveAction" scope="prototype">
+		<property name="liveService" ref="liveService"/>
+		<property name="expenseTotalManagerDao" ref="expenseTotalManagerDao"/>
+    </bean>
+    
+</beans>

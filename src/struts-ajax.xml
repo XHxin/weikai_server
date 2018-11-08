@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="json" extends="json-default">
+
+
+		<interceptors>
+			<!-- 自定义的拦截器 -->
+			<interceptor name="loginToken"
+				class="cc.messcat.filter.LoginTokenInterceptor">
+				<!-- 拦截Method1方法，多個方法可以用,分隔 -->
+				<param name="includeMethods"></param>
+				<!-- 不拦截Method1方法 -->
+				<param name="excludeMethods">
+					getMobileCode,toRegist,regist,commitExpertInfo,updateLogin,frontBanners,frontNews,frontNewsMore,news,getProductsByName,getRegionByName,getEProductsByName,
+					returnAppNotify,getNotifyResult,getExpertList,commitStandardMade,createQRCode,loginThird,bindMobile,isRegister,isBind,
+					execute,getExpertList,getExpertDetail,codeSearchList,getQualityList,getStandardReadingList2,hisStandardList,getPayExpertDetail,getAppEBusiness,
+					getClassifyList,getAllReply,notPayDetail,getProExpertList,searchDetail,getStandardRead,getQualityShare,getAllClassifyList,getEProductsByName,walletNotify,
+					walletNotifyResult,walletIOSVerify,getMemberIdByMobile,casualLook,getMobileByMemberId,getIdAndRecommendTimes,getToken,initExchange,openLive,createRecordedBroadcastUrl,
+					getEProductsBySearchKeyWord,getStandReadingBySearchKeyWord,getHotVideos,getSeriesVideo,multSearchByKeyWord,hotStandardReadH5,getReportItemH5,
+					getQualityShareH5,getStandardReadH5,searchDetailH5,getQualityListH5,getExpertH5,videoDetails,getFirstPager,getFirstMore,getSubjectDetail,getArticleList,getHisArticleList,
+					getMoreStandReadShare,getMoreExpert,getMoreHotReply,getMoreLiveVideo,getMoreLiveSubject,getMoreStandReadSerialise,indexCarousel,hisAnswer,getMarketReportDetail,
+					getPopularList,getVideoAdjuct,fensCount,wechatAttNumber,wechatToken,weiboAttNumber,videoCoupn,haveCoupn,watchTimes,signAndSendCoupn,freeOrder,giveCoupnForViewer,registEas,youzanNotify,getCheckStatus,testPay,
+					distributeExpense
+				</param>
+			</interceptor>
+			<interceptor-stack name="myInterceptor">
+				<!-- struts的默认拦截器，注意顺序排第一。没有这个，action被拦截后，可能会获取不到请求信息 -->
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="loginToken"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 全局返回响应 -->
+		<global-results>
+			<result name="loginTokenInterceptor" type="json">
+				<param name="root">object</param>
+			</result>
+		</global-results>
+
+		<action name="frontAction" class="cc.messcat.web.server.FrontAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+
+		<!--标准解读 -->
+		<action name="standardReadingAction" class="cc.messcat.web.server.StandardReadingAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+
+		<!--付费咨询 -->
+		<action name="payConsultAction" class="cc.messcat.web.server.PayConsultAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+
+		<action name="eBusinessAction" class="cc.messcat.web.server.EBusinessAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+
+		<action name="loginAction" class="cc.messcat.web.server.LoginAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<result name="loginThird" type="json">
+				<param name="root">object</param>
+			</result>
+			<result name="bindMobile" type="json">
+				<param name="root">object</param>
+			</result>
+			<result name="isRegister" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+		<action name="memberAction" class="cc.messcat.web.server.MemberAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<result name="createQRCode" type="json">
+				<param name="root">afterCompoundImg</param>
+			</result>
+			<result name="bindMobile" type="json">
+				<param name="root">object</param>
+			</result>
+			<result name="getPayAlipayPrams" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+		<action name="payAction" class="cc.messcat.web.server.PayAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+
+		<action name="welcomeAction" class="cc.messcat.web.server.WelcomeAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+		</action>
+
+		<action name="advertisementAction" class="cc.messcat.web.server.AdvertisementAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+		</action>
+		<action name="consultAction" class="cc.messcat.web.server.ConsultAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+		</action>
+		<action name="systemMessageAction" class="cc.messcat.web.server.SystemMessageAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+		</action>
+		<action name="activityAction" class="cc.messcat.web.server.ActivityAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<!-- <interceptor-ref name="myInterceptor"></interceptor-ref> -->
+		</action>
+		<!-- 综合搜索框 -->
+		<action name="multipleSearchAction" class="cc.messcat.web.server.MultipleSearchAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+			<interceptor-ref name="myInterceptor"></interceptor-ref>
+		</action>
+		<action name="liveAction" class="cc.messcat.web.server.LiveAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+				<param name="excludeNullProperties">true</param> 
+			</result>
+		</action>
+		<action name="sendMessageAction" class="cc.messcat.web.server.SendMessageAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+		</action>
+		<action name="smsAction" class="cc.messcat.web.server.SmsAction">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+		</action>
+		<action name="problemInvalidTrigger" class="cc.messcat.quartz.ProblemInvalidTrigger">
+			<result name="success" type="json">
+				<param name="root">object</param>
+			</result>
+		</action>
+		<action name="fensCountAction" class="cc.messcat.web.server.FensCountAction">
+			<result name="pie" type="json">
+				<param name="root">pieVos</param>
+			</result>
+			<result name="line" type="json">
+				<param name="root">lineChartVos</param>
+			</result>
+			<result name="target" type="json">
+				<param name="root">targetPieVos</param>
+			</result>
+		</action>
+		<action name="systemAction" class="cc.messcat.web.server.SystemAction">
+		  <result name="success" type="json">
+		      <param name="root">object</param>
+		  </result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+
+	<import resource="classpath:/spring/applicationContext-activity.xml"/>
+	<import resource="classpath:/spring/applicationContext-advertisement.xml"/>
+	<import resource="classpath:/spring/applicationContext-base.xml"/>
+	<import resource="classpath:/spring/applicationContext-consult.xml"/>
+	<import resource="classpath:/spring/applicationContext-ebusiness.xml"/>
+	<import resource="classpath:/spring/applicationContext-fensCount.xml"/>
+	<import resource="classpath:/spring/applicationContext-font.xml"/>
+	<import resource="classpath:/spring/applicationContext-live.xml"/>
+	<import resource="classpath:/spring/applicationContext-login.xml"/>
+	<import resource="classpath:/spring/applicationContext-member.xml"/>
+	<import resource="classpath:/spring/applicationContext-multipleSearch.xml"/>
+	<import resource="classpath:/spring/applicationContext-pay.xml"/>
+	<import resource="classpath:/spring/applicationContext-payconsult.xml"/>
+	<import resource="classpath:/spring/applicationContext-quartz.xml"/>
+	<import resource="classpath:/spring/applicationContext-report.xml"/>
+	<import resource="classpath:/spring/applicationContext-sms.xml"/>
+	<import resource="classpath:/spring/applicationContext-standardread.xml"/>
+	<import resource="classpath:/spring/applicationContext-system.xml"/>
+	<import resource="classpath:/spring/applicationContext-systemMessage.xml"/>
+	<import resource="classpath:/spring/applicationContext-welcome.xml"/>
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor "/>
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		
+		<!-- 指定连接数据库的驱动 -->
+		<property name="driverClass" value="${jdbc.driverClassName}" /> 
+		<!-- 指定连接数据库的URL -->
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<!-- 指定连接数据库的用户名 -->
+		<property name="user" value="${jdbc.username}" />
+		<!-- 指定连接数据库的密码 -->
+		<property name="password" value="${jdbc.password}" />
+		<!--连接池中保留的最小连接数。-->
+        <property name="minPoolSize" value="5"/>
+        <!--连接池中保留的最大连接数。Default: 15 -->
+        <property name="maxPoolSize" value="500"/>
+        <!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 3 -->
+        <property name="initialPoolSize" value="10"/>
+        <!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+        <property name="maxIdleTime" value="60"/>
+        <!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+        <property name="acquireIncrement" value="5"/>
+        <!--JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements
+       	属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。
+       	如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0-->
+        <property name="maxStatements" value="0"/>
+        <!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+        <property name="idleConnectionTestPeriod" value="60"/>
+        <!--定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+        <property name="acquireRetryAttempts" value="30"/>
+        <!--获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效
+       	保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试
+       	获取连接失败后该数据源将申明已断开并永久关闭。Default: false-->
+        <property name="breakAfterAcquireFailure" value="false"/>
+        <!--因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的
+      	时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable
+      	等方法来提升连接测试的性能。Default: false -->
+        <property name="testConnectionOnCheckout" value="false"/>
+		<!--连接池用完时客户调用getConnection()后等待获取连接的时间，单位：毫秒。超时后会抛出-->
+		<!--SQLEXCEPTION，如果设置0，则无限等待。Default:0-->
+		<property name="checkoutTimeout" value="5000"/>
+	</bean>
+	
+	<!-- Hibernate配置 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		
+		<property name="hibernateProperties">
+			<props>
+			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			<!-- <prop key="hibernate.hbm2ddl.auto">none</prop>-->
+			 <prop key="hibernate.show_sql">false</prop>
+			 <prop key="hibernate.format_sql">false</prop>
+			 <!-- 释放连接池 -->
+			 <prop key="hibernate.connection.release_mode">auto</prop>
+			</props>
+		</property>
+		
+		<!-- 配置注解映射 -->
+		<property name="packagesToScan" value="cc.messcat.entity"/>
+		
+		<property name="mappingResources">
+			<list>
+				<value>cc/messcat/entity/Authorities.hbm.xml</value>
+				<value>cc/messcat/entity/Roles.hbm.xml</value>
+				<value>cc/messcat/entity/RolesAuthorities.hbm.xml</value>
+				<value>cc/messcat/entity/Users.hbm.xml</value>
+				<value>cc/messcat/entity/UsersRoles.hbm.xml</value>
+				<value>cc/messcat/entity/EnterpriseAd.hbm.xml</value>
+				<value>cc/messcat/entity/EnterpriseColumn.hbm.xml</value>
+				<value>cc/messcat/entity/EnterpriseLinks.hbm.xml</value>
+				<value>cc/messcat/entity/EnterpriseNews.hbm.xml</value>
+			 	<value>cc/messcat/entity/WebSite.hbm.xml</value>
+			 	<value>cc/messcat/entity/WebSkin.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/PageType.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/Region.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/Product.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/Legal.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/NationalDifferences.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/Standard.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/StandardBase.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/Authentication.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/BuysRecord.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/Report.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/StandardMade.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/QualityType.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/Integral.hbm.xml</value>
+	 	 		<value>cc/messcat/entity/VirtualCoinRecord.hbm.xml</value>
+                <value>cc/messcat/entity/CoupnUser.hbm.xml</value>
+			</list>
+		</property> 
+		
+	</bean>
+	
+	<!-- 配置事务管理 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- 事务拦截器-->
+    <bean id="transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<!--  事务拦截器bean需要依赖注入一个事务管理器 -->
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<!--  下面定义事务传播属性-->
+			<props>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="get*">readOnly</prop>
+				<prop key="find*">readOnly</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 进行事务AOP切点切入 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<!--  指定对满足哪些bean name的bean自动生成业务代理 -->
+		<property name="beanNames">
+			<!--  下面是所有需要自动创建事务代理的bean-->
+			<list>
+				<value>*ManagerDao</value>
+				<value>*Service</value>
+			</list>
+			<!--  此处可增加其他需要自动创建事务代理的bean-->
+		</property>
+		<!--  下面定义BeanNameAutoProxyCreator所需的事务拦截器-->
+		<property name="interceptorNames">
+			<list>
+				<!-- 此处可增加其他新的Interceptor -->
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	<bean id= "transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager"></property>
+	</bean>
+
+	<beans profile="product">
+		<context:property-placeholder location="classpath:/properties/product/jdbc.properties"/>
+	</beans>
+	<beans profile="test">
+		<context:property-placeholder location="classpath:/properties/test/jdbc.properties"></context:property-placeholder>
+	</beans>
+	<beans profile="dev">
+		<context:property-placeholder location="classpath:/properties/dev/jdbc.properties"></context:property-placeholder>
+	</beans>
+
+</beans>

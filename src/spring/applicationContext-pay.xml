@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-lazy-init="true">
+
+	<!-- dao配置 -->
+	<bean id="payDao" class="cc.messcat.dao.pay.PayDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="expertIEDao" class="cc.messcat.dao.system.ExpenseExpertDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="platformIncomelDao" class="cc.messcat.dao.system.ExpensePlatDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<!-- serivce配置 -->
+	<bean id="expertIEManagerDao" class="cc.messcat.service.system.ExpenseExpertManagerDaoImpl">
+		<property name="expertIEDao" ref="expertIEDao"/>
+	</bean>
+	<bean id="platformIncomeManagerDao" class="cc.messcat.service.system.ExpensePlatManagerDaoImpl">
+		<property name="expertIEDao" ref="expertIEDao"/>
+	</bean>
+	<bean id="payManagerDao" class="cc.messcat.service.pay.PayManagerDaoImpl">
+		<property name="buysRecordDao" ref="buysRecordDao" />
+		<property name="payDao" ref="payDao" />
+		<property name="integralDao" ref="integralDao" />
+		<property name="memberDao" ref="memberDao" />
+		<property name="standardReadDao" ref="standardReadDao" />
+		<property name="webSiteDao" ref="webSiteDao" />
+		<property name="expertIEDao" ref="expertIEDao" />
+		<property name="expensePlatDao" ref="platformIncomeDao" />
+		<property name="regionDao" ref="regionDao" />
+		<property name="productDao" ref="productDao" />
+		<property name="webSkinDao" ref="webSkinDao" />
+		<property name="businessProductDao" ref="businessProductDao" />
+		<property name="hotReplyDao" ref="hotReplyDao" />
+		<property name="systemMessageDao" ref="systemMessageDao" />
+		<property name="virtualCoinRecordDao" ref="virtualCoinRecordDao" />
+		<property name="walletDao" ref="walletDao"/>
+		<property name="expenseTotalDao" ref="buysRecordNewDao"/>
+		<property name="liveDao" ref="liveDao"/>
+		<property name="expertDivideIntoDao" ref="expertDivideIntoDao"/>
+		<property name="divideScaleExpertDao" ref="divideScaleExpertDao"/>
+	</bean>
+
+	<bean id="payAction" class="cc.messcat.web.server.PayAction"
+		  scope="prototype">
+		<property name="payManagerDao" ref="payManagerDao"/>
+		<property name="webSiteManagerDao" ref="webSiteManagerDao"/>
+		<property name="memberManagerDao" ref="memberManagerDao"/>
+		<property name="regionManagerDao" ref="regionManagerDao"/>
+		<property name="productManagerDao" ref="productManagerDao"/>
+		<property name="integralManagerDao" ref="integralManagerDao"/>
+		<property name="standardReadManagerDao" ref="standardReadManagerDao"/>
+		<property name="businessProductManagerDao" ref="businessProductManagerDao"/>
+		<property name="hotReplyService" ref="hotReplyService"/>
+		<property name="buysRecordManagerDao" ref="buysRecordManagerDao"/>
+		<property name="walletManagerDao" ref="walletManagerDao"/>
+		<property name="liveService" ref="liveService"/>
+		<property name="expertDivideIntoManagerDao" ref="expertDivideIntoManagerDao"/>
+		<property name="expenseTotalManagerDao" ref="expenseTotalManagerDao"/>
+		<property name="consultServerManagerDao" ref="consultServerManagerDao"/>
+	</bean>
+
+</beans>
